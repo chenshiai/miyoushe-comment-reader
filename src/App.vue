@@ -251,6 +251,7 @@
 <script setup>
 import { ref, reactive, computed, watch, nextTick } from 'vue'
 import { getReplyList } from './api/reply.js'
+import { chat } from './api/deepseek.js'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
@@ -530,26 +531,17 @@ async function sendChat() {
   scrollToBottom()
 
   try {
-    const res = await fetch('/api/deepseek/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${deepseekApiKey.value}`
-      },
-      body: JSON.stringify({
-        model: chatModel.value,
-        messages,
-        reasoning_effort: "high",
-        stream: false
-      })
+    const res = await chat({
+      apiKey: deepseekApiKey.value,
+      model: chatModel.value,
+      messages
     })
 
-    if (!res.ok) {
-      const errText = await res.text()
-      throw new Error(`API ${res.status}: ${errText}`)
+    const data = res.data
+    if (data.error) {
+      throw new Error(data.message)
     }
 
-    const data = await res.json()
     const reply = data.choices?.[0]?.message?.content || '(空回复)'
 
     chatMessages.value.push({ id: ++chatIdCounter, role: 'assistant', content: reply })

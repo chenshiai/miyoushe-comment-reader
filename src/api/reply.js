@@ -1,13 +1,4 @@
-import axios from 'axios'
-
-const request = axios.create({
-  // baseURL: 'https://8.155.52.59',
-  baseURL: '',
-  timeout: 30000,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-})
+import request from './index'
 
 export function getReplyList({ levelId, cursor = {}, uid = '', region = 'cn_gf01' }) {
   return request.post('/api/reply/list', {
