@@ -3,6 +3,10 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
+    build: {
+      outDir: "ugc-reader",
+    },
+    base: '/ugc-reader/',
   server: {
     host: '0.0.0.0',
     port: 5180,
