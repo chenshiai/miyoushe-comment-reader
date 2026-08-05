@@ -216,8 +216,8 @@
 
       <div class="chat-messages" ref="chatContainer">
         <div v-if="!chatMessages.length" class="chat-empty">
-          <p>输入问题开始对话</p>
-          <p class="chat-hint">可以让我总结评论、分析反馈等</p>
+          <p>点击下方按钮对评论进行总结</p>
+          <!-- <p class="chat-hint">可以让我总结评论、分析反馈等</p> -->
         </div>
         <div
           v-for="msg in chatMessages"
@@ -235,14 +235,15 @@
 
       <div class="chat-input-area">
         <textarea
+          v-show="false"
           v-model="chatInput"
           :placeholder="loading ? '评论加载中，请等待...' : '输入消息...'"
           :disabled="loading"
           rows="2"
           @keydown.enter.exact.prevent="sendChat"
         ></textarea>
-        <button class="btn-primary btn-sm" :disabled="loading || chatLoading || !chatInput.trim()" @click="sendChat">
-          发送
+        <button class="btn-primary" :disabled="loading || chatLoading || !allReplies.length" @click="sendChat">
+          {{ chatLoading ? '总结中...' : '总结一下' }}
         </button>
       </div>
     </aside>
@@ -499,8 +500,9 @@ function scrollToBottom() {
 }
 
 async function sendChat() {
-  const input = chatInput.value.trim()
-  if (!input || chatLoading.value || loading.value) return
+  // 发送内容临时固定为『总结一下』
+  const input = '总结一下'
+  if (chatLoading.value || loading.value || !allReplies.value.length) return
 
   if (!deepseekApiKey.value) {
     showSettings.value = true
@@ -509,7 +511,6 @@ async function sendChat() {
 
   const userMsg = { id: ++chatIdCounter, role: 'user', content: input }
   chatMessages.value.push(userMsg)
-  chatInput.value = ''
   scrollToBottom()
 
   const commentData = allReplies.value.length
