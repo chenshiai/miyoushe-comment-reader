@@ -2,6 +2,7 @@
   <div class="app-layout">
     <aside class="sidebar-left">
       <h1 class="sidebar-title">评论读取工具</h1>
+      <a :href="`https://8.155.52.59?time=${Date.now()}`" rel="opener">-> 点击这里前往信任授权</a>
 
       <div class="control-group">
         <div class="control-item">
