@@ -1,7 +1,7 @@
 import request from './index'
 
 export function chat({ apiKey, model, messages, reasoningEffort = 'high', stream = false }) {
-  return request.post('/api/deepseek/chat', {
+  return request.post('/deepseek/chat', {
     model,
     messages,
     reasoning_effort: reasoningEffort,

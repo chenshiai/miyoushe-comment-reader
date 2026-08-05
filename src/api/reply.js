@@ -1,7 +1,7 @@
 import request from './index'
 
 export function getReplyList({ levelId, cursor = {}, uid = '', region = 'cn_gf01' }) {
-  return request.post('/api/reply/list', {
+  return request.post('/reply/list', {
     uid,
     region,
     level_id: levelId,
